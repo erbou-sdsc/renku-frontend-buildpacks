@@ -24,9 +24,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - uses: actions/setup-go@v6
+
+      - uses: buildpacks/github-actions/setup-pack@v5.12.4
+
       - name: Run tests
         run: make tests
 
       - name: Publish builders
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: make publish_builders
