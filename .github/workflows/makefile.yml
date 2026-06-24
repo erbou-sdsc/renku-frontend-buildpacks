@@ -42,6 +42,10 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: make publish_builders
 
-      - name: Publish sample
+      - name: Publish jupyterlab frontend sample
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: make publish_sample_coding-agent
+        run: make publish_sample_coding-agent FRONTEND=jupyterlab
+
+      - name: Publish vscodium frontend sample
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: make publish_sample_coding-agent FRONTEND=vscodium

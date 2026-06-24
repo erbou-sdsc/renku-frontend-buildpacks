@@ -20,8 +20,8 @@ echo "Building sample image $IMAGE:$TAG using builder $BUILDER_IMAGE"
 
 if [[ -z $PUBLISH ]]; then
 	echo "Will not publish the push the image to the repository"
-	pack build $IMAGE:$TAG --clear-cache --path ${IMAGE_PATH} --env BP_RENKU_FRONTENDS=${FRONTEND} --builder ${BUILDER_IMAGE}:${TAG}
+	pack build ${IMAGE}-${FRONTEND}:${TAG} --clear-cache --path ${IMAGE_PATH} --env BP_RENKU_FRONTENDS=${FRONTEND} --builder ${BUILDER_IMAGE}:${TAG}
 else
 	echo "Found publish flag, will push the image to the repo"
-	pack build $IMAGE:$TAG --clear-cache --path ${IMAGE_PATH} --env BP_RENKU_FRONTENDS=${FRONTEND} --builder ${BUILDER_IMAGE}:${TAG} --publish
+	pack build ${IMAGE}-${FRONTEND}:${TAG} --clear-cache --path ${IMAGE_PATH} --env BP_RENKU_FRONTENDS=${FRONTEND} --builder ${BUILDER_IMAGE}:${TAG} --publish
 fi
