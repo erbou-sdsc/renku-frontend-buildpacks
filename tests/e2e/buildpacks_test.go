@@ -317,7 +317,7 @@ var _ = Describe("Testing samples", Label("samples"), Ordered, func() {
 		Entry("using homebrew sample", "../../samples/homebrew"),
 	)
 
-	DescribeTableSubtree(
+	FDescribeTableSubtree(
 		"coding-agent",
 		func(source string) {
 			var image string

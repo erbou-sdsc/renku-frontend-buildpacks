@@ -92,7 +92,7 @@ run:
 	docker run -it --rm --publish 8000:8000 --entrypoint $(FRONTEND) $(SAMPLE_IMAGE)-$(FRONTEND):latest
 
 REGISTRY_HOST=ghcr.io
-REGISTRY_REPO=swissdatasciencecenter/renku-frontend-buildpacks
+REGISTRY_REPO=erbou/renku-frontend-buildpacks
 
 run_image:
 	bash ./scripts/publish_run_image.sh $(REGISTRY_HOST)/$(REGISTRY_REPO)/run-image
