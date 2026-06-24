@@ -25,6 +25,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-go@v6
+        with:
+          go-version: '1.25.x'
 
       - uses: buildpacks/github-actions/setup-pack@v5.12.4
 
