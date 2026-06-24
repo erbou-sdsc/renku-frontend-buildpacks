@@ -116,6 +116,11 @@ publish_builders:
 		./scripts/publish_builder.sh $(REGISTRY_HOST)/$(REGISTRY_REPO)/$$builder builders/$$builder --publish; \
 	done
 
+publish_sample_%:
+	@echo "Publishing sample ... "$(*)
+	./scripts/publish_sample.sh $(REGISTRY_HOST)/$(REGISTRY_REPO)/$(*) $(REGISTRY_HOST)/$(REGISTRY_REPO)/selector samples/$(*) $(FRONTEND) --publish
+
+
 .PHONY: tests
 tests:
 	go vet ./...
