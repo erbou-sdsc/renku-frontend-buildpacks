@@ -75,6 +75,16 @@ if [[ -z "${BP_RENKU_AI_AGENTS:-}" && -f "project.toml" ]]; then
 fi
 
 info "Install ${BP_RENKU_AI_AGENTS:-}"
+
+mkdir -p "${AI_LAYER}/agentic/"
+mkdir -p "${AI_LAYER}/bin/"
+mkdir -p "${AI_LAYER_CACHE}/agentic"
+
+cp "${CNB_BUILDPACK_DIR}/bin/harness-sbx" "${AI_LAYER}/bin/harness-sbx"
+chmod a+x "${AI_LAYER}/bin/harness-sbx"
+echo "#!/bin/bash" >> "${AI_LAYER}/bin/sbx"
+chmod a+rx "${AI_LAYER}/bin/sbx"
+
 for agent in ${BP_RENKU_AI_AGENTS:-}; do
 	name=${agent%@*}
 	version=${agent##*@}
@@ -86,8 +96,6 @@ for agent in ${BP_RENKU_AI_AGENTS:-}; do
 	fi
 
 	[[ "${version}" =~ ^([~^]?[0-9]+(\.[0-9]+){0,2})?$ ]] || continue
-	mkdir -p "${AI_LAYER}/agentic/"
-	mkdir -p "${AI_LAYER_CACHE}/agentic"
 
 	case "${name}" in
 	pi)
@@ -123,6 +131,7 @@ for agent in ${BP_RENKU_AI_AGENTS:-}; do
 			fi
 		EOL
 		chmod a+x "${AI_LAYER}/exec.d/init-pi.sh"
+		echo "${AI_LAYER}/bin/harness-sbx --start --pi &" >> "${AI_LAYER}/bin/sbx"
 		;;
 	claude)
 		log "Install Claude agent [${version:-latest}]"
@@ -146,6 +155,7 @@ for agent in ${BP_RENKU_AI_AGENTS:-}; do
 			fi
 		EOL
 		chmod a+x "${AI_LAYER}/exec.d/init-claude.sh"
+		echo "${AI_LAYER}/bin/harness-sbx --start --claude &" >> "${AI_LAYER}/bin/sbx"
 		;;
 	codex)
 		log "Install Codex agent [${version:-latest}]"
@@ -169,9 +179,20 @@ for agent in ${BP_RENKU_AI_AGENTS:-}; do
 			fi
 		EOL
 		chmod a+x "${AI_LAYER}/exec.d/init-codex.sh"
+		echo "${AI_LAYER}/bin/harness-sbx --start --codex &" >> "${AI_LAYER}/bin/sbx"
 		;;
 	esac
 done
+echo "wait" >> "${AI_LAYER}/bin/sbx"
+
+# SET DEFAULT START COMMAND
+cat >"${CNB_LAYERS_DIR}/launch.toml" <<EOL
+[[processes]]
+type = "harness-sbx"
+command = ["tini", "-g", "--"]
+args = ["bash", "${AI_LAYER}/bin/sbx"]
+default = false
+EOL
 
 # Cleanup
 log "Cleanup"

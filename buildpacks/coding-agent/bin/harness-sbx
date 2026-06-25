@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+main() {
+        local -a args=("$@")
+        local -i use_last_session=1
+        local -i attach=1
+        local    harness=pi
+
+        for i in "${!args[@]}"; do
+                case "${args[i]}" in
+                        --pi)
+                                harness='pi'
+                                unset 'args[i]'
+                                ;;
+                        --claude)
+                                harness='claude'
+                                unset 'args[i]'
+                                ;;
+                        --codex)
+                                harness='codex'
+                                unset 'args[i]'
+                                ;;
+                        --new-session|-n)
+                                unset 'args[i]'
+                                use_last_session=0
+                                ;;
+                        --session|-r)
+                                use_last_session=0
+                                ;;
+                        --start)
+                                unset 'args[i]'
+                                attach=0
+                                ;;
+                esac
+        done
+
+        local -r socket_name="${HOME}/work/.${harness}/tmux/mux.socket"
+
+        if (( attach == 0 )); then
+                exec 4<>/tmp/tmux.${harness}.lock
+                flock -x -w 5 4
+                trap 'tmux -S "'${socket_name}'" kill-server; exit 0' TERM INT
+                mkdir -p $(dirname "${socket_name}")
+
+                while true; do
+                        # Reuse the most recent session if any.
+                        if (( use_last_session == 1 )) && [[ -d "${PI_CODING_AGENT_DIR:-.}/sessions" ]] ; then
+                                while read -r s; do
+                                        if [[ "${s}" =~ ^.*_([0-9a-z-]+).jsonl$ ]]; then
+                                                args+=("--session" "${BASH_REMATCH[1]}")
+                                                                                                break
+                                        fi
+                                done < <(find "${PI_CODING_AGENT_DIR:-.}/sessions" -name '*.jsonl' -type f -printf '%f\n'|sort -r|head -1)
+                        fi
+
+                        # Reuse the most recent session if any.
+                        if ! tmux -S "${socket_name}" has-session -t ${harness}-shell >& /dev/null; then
+                                tmux -S "${socket_name}" new-session -d -s ${harness}-shell ${harness} "${args[@]}"
+                        fi
+
+                        # Pool until tmux session exits.
+                        # Alternative is to start tmux with bash -lc "trap 'tmux wait-for -S pi-end' EXIT; exec pi \"${args[@]}\"
+                        # and wait for the signal in the loop with tmux wait-for pi-end, however that wouldn't capture uncatchable signals
+                        while tmux -S "${socket_name}" has-session -t ${harness}-shell >& /dev/null; do
+                                sleep 1
+                        done
+                done
+        elif [[ -S "${socket_name}" ]]; then
+                tmux -S "${socket_name}" has-session -t ${harness}-shell >& /dev/null && exec tmux -S "${socket_name}" attach -t ${harness}-shell || echo "No session"
+        fi
+}
+
+main "$@"
