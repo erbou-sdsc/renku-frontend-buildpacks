@@ -109,7 +109,6 @@ for agent in ${BP_RENKU_AI_AGENTS:-}; do
 
 		printf '/home/renku/work/.pi/agent' >  "${ENV_LAUNCH}/PI_CODING_AGENT_DIR.override"
 		printf '1' >  "${ENV_LAUNCH}/PI_SKIP_VERSION_CHECK.override"
-		printf '1' >  "${ENV_LAUNCH}/PI_OFFLINE.override"
 		mkdir -p "${AI_LAYER}/exec.d/"
 		cat > "${AI_LAYER}/exec.d/init-pi.sh" <<- EOL
 			#!/usr/bin/env bash
