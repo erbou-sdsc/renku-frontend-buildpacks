@@ -49,3 +49,7 @@ jobs:
       - name: Publish vscodium frontend sample
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: make publish_sample_coding-agent FRONTEND=vscodium
+
+      - name: Publish ttyd frontend sample
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: make publish_sample_coding-agent FRONTEND=ttyd
