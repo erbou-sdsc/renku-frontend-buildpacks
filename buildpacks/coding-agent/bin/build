@@ -130,7 +130,9 @@ for agent in ${BP_RENKU_AI_AGENTS:-}; do
 			  tar -C "\${PI_CODING_AGENT_DIR}" -xzf "${AI_LAYER}/agentic/${name}.tgz"
 			fi
 		EOL
-		chmod a+x "${AI_LAYER}/exec.d/init-pi.sh"
+		chmod a+rx "${AI_LAYER}/exec.d/init-pi.sh"
+		printf '#!/bin/bash\n%s/bin/harness-sbx --pi\n' "${AI_LAYER}" > "${AI_LAYER}/bin/pi-sbx"
+		chmod a+rx "${AI_LAYER}/bin/pi-sbx"
 		echo "${AI_LAYER}/bin/harness-sbx --start --pi &" >> "${AI_LAYER}/bin/sbx"
 		;;
 	claude)
@@ -154,7 +156,9 @@ for agent in ${BP_RENKU_AI_AGENTS:-}; do
 			  tar -C "\${CLAUDE_CONFIG_DIR}" -xzf "${AI_LAYER}/agentic/${name}.tgz"
 			fi
 		EOL
-		chmod a+x "${AI_LAYER}/exec.d/init-claude.sh"
+		chmod a+rx "${AI_LAYER}/exec.d/init-claude.sh"
+		printf '#!/bin/bash\n%s/bin/harness-sbx --claude\n' "${AI_LAYER}" > "${AI_LAYER}/bin/claude-sbx"
+		chmod a+rx "${AI_LAYER}/bin/claude-sbx"
 		echo "${AI_LAYER}/bin/harness-sbx --start --claude &" >> "${AI_LAYER}/bin/sbx"
 		;;
 	codex)
@@ -178,14 +182,16 @@ for agent in ${BP_RENKU_AI_AGENTS:-}; do
 			  tar -C "\${CODEX_HOME}" -xzf "${AI_LAYER}/agentic/${name}.tgz"
 			fi
 		EOL
-		chmod a+x "${AI_LAYER}/exec.d/init-codex.sh"
+		chmod a+rx "${AI_LAYER}/exec.d/init-codex.sh"
+		printf '#!/bin/bash\n%s/bin/harness-sbx --codex\n' "${AI_LAYER}" > "${AI_LAYER}/bin/codex-sbx"
+		chmod a+rx "${AI_LAYER}/bin/codex-sbx"
 		echo "${AI_LAYER}/bin/harness-sbx --start --codex &" >> "${AI_LAYER}/bin/sbx"
 		;;
 	esac
 done
 echo "wait" >> "${AI_LAYER}/bin/sbx"
 
-# SET DEFAULT START COMMAND
+# SET SANDBOX START COMMAND
 cat >"${CNB_LAYERS_DIR}/launch.toml" <<EOL
 [[processes]]
 type = "harness-sbx"

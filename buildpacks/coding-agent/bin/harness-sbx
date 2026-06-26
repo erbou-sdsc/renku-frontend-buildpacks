@@ -35,12 +35,14 @@ main() {
         done
 
         local -r socket_name="${HOME}/work/.${harness}/tmux/mux.socket"
+        local -r tmux_lock="${HOME}/work/.${harness}/tmux/mux.lock"
 
         if (( attach == 0 )); then
-                exec 4<>/tmp/tmux.${harness}.lock
+				cd -- "${HOME}/work"
+                mkdir -p -- $(dirname "${tmux_lock}")
+                exec 4<>"${tmux_lock}"
                 flock -x -w 5 4
                 trap 'tmux -S "'${socket_name}'" kill-server; exit 0' TERM INT
-                mkdir -p $(dirname "${socket_name}")
 
                 while true; do
                         # Reuse the most recent session if any.
