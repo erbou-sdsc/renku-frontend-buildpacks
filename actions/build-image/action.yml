@@ -12,7 +12,7 @@ inputs:
   builder-version:
     description: Builder version to use
     required: false
-    default: "0.8.0"
+    default: "0.9.0"
   run-image:
     description: Run image to use - defaults to using the image bundled with the builder
     default: ""
