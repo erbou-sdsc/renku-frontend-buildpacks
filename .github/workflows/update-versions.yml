@@ -150,6 +150,8 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
 
     - uses: actions/setup-go@v6
+      with:
+        go-version: '1.25'
 
     - name: Update buildpack.toml versions
       run: make update-buildpack-versions RELEASE_VERSION=${{ github.event.inputs.version }}${{ (github.event.inputs.test_mode == 'true' && '-test') || '' }}
