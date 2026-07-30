@@ -11,7 +11,12 @@ mkdir -p "${cache_layer_dir}"
 mkdir -p "${env_dir}"
 
 echo "Installing ipykernel in ${kernel_layer_dir}"
-python -m pip install --prefix="${kernel_layer_dir}" --cache-dir="${cache_layer_dir}" ipykernel
+if which uv >/dev/null 2>&1; then
+  # uv-created virtualenvs do not ship pip, so install ipykernel via uv instead
+  uv pip install --python "$(command -v python)" --prefix="${kernel_layer_dir}" --cache-dir="${cache_layer_dir}" ipykernel
+else
+  python -m pip install --prefix="${kernel_layer_dir}" --cache-dir="${cache_layer_dir}" ipykernel
+fi
 python_version=python$(python --version|cut -d' ' -f2)
 site_packages="$kernel_layer_dir/lib/${python_version%.*}/site-packages"
 export PYTHONPATH="$site_packages:$PYTHONPATH"
