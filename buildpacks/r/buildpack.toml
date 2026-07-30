@@ -11,4 +11,4 @@ api = "0.11"
 [buildpack]
   id = "renku/r"
   name = "R Buildpack"
-  version = "0.9.0"
+  version = "0.9.1"

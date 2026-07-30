@@ -11,4 +11,4 @@ api = "0.11"
 [buildpack]
   id = "renku/conda-nodefaults"
   name = "Conda nodefaults buildpack"
-  version = "0.9.0"
+  version = "0.9.1"

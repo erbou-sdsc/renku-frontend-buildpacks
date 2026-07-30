@@ -2,51 +2,51 @@ description = "Builder for Renku frontends and environments."
 
 [[buildpacks]]
   uri = "../../buildpacks/renku-variables"
-  version = "0.9.0"
+  version = "0.9.1"
 
 [[buildpacks]]
   uri = "../../buildpacks/vscodium"
-  version = "0.9.0"
+  version = "0.9.1"
 
 [[buildpacks]]
   uri = "../../buildpacks/conda-nodefaults"
-  version = "0.9.0"
+  version = "0.9.1"
 
 [[buildpacks]]
   uri = "../../buildpacks/kernel-installer"
-  version = "0.9.0"
+  version = "0.9.1"
 
 [[buildpacks]]
   uri = "../../buildpacks/jupyterlab"
-  version = "0.9.0"
+  version = "0.9.1"
 
 [[buildpacks]]
   uri = "../../buildpacks/ttyd"
-  version = "0.9.0"
+  version = "0.9.1"
 
 [[buildpacks]]
   uri = "../../buildpacks/custom-frontend"
-  version = "0.9.0"
+  version = "0.9.1"
 
 [[buildpacks]]
   uri = "../../buildpacks/python-dependency-manager"
-  version = "0.9.0"
+  version = "0.9.1"
 
 [[buildpacks]]
   uri = "../../buildpacks/renv"
-  version = "0.9.0"
+  version = "0.9.1"
 
 [[buildpacks]]
   uri = "../../buildpacks/r-dependency-manager"
-  version = "0.9.0"
+  version = "0.9.1"
 
 [[buildpacks]]
   uri = "../../buildpacks/rstudio"
-  version = "0.9.0"
+  version = "0.9.1"
 
 [[buildpacks]]
   uri = "../../buildpacks/init-scripts"
-  version = "0.9.0"
+  version = "0.9.1"
 
 [[buildpacks]]
   uri = "docker://docker.io/paketobuildpacks/python:2.55.0"
@@ -69,25 +69,25 @@ description = "Builder for Renku frontends and environments."
 
 [[buildpacks]]
   uri = "../../buildpacks/homebrew"
-  version = "0.9.0"
+  version = "0.9.1"
 
 [[buildpacks]]
   uri = "../../buildpacks/r-conda"
-  version = "0.9.0"
+  version = "0.9.1"
 
 [[buildpacks]]
   uri = "../../buildpacks/coding-agent"
-  version = "0.9.0"
+  version = "0.9.1"
 
 [[buildpacks]]
   uri = "../../buildpacks/r-dependency-manager-conda"
-  version = "0.9.0"
+  version = "0.9.1"
 
 [[order]]
 
   [[order.group]]
     id = "renku/conda-nodefaults"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
@@ -100,19 +100,19 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/python-dependency-manager"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "renku/renku-variables"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "renku/jupyterlab"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "renku/kernel-installer"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "heroku/deb-packages"
@@ -121,12 +121,12 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/homebrew"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
     id = "renku/init-scripts"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
@@ -136,14 +136,14 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/coding-agent"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
 [[order]]
 
   [[order.group]]
     id = "renku/conda-nodefaults"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
@@ -152,15 +152,15 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/python-dependency-manager"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "renku/renku-variables"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "renku/custom-frontend"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "heroku/deb-packages"
@@ -169,12 +169,12 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/homebrew"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
     id = "renku/init-scripts"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
@@ -184,14 +184,14 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/coding-agent"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
 [[order]]
 
   [[order.group]]
     id = "renku/conda-nodefaults"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
@@ -200,15 +200,15 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/python-dependency-manager"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "renku/renku-variables"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "renku/ttyd"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "heroku/deb-packages"
@@ -217,12 +217,12 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/homebrew"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
     id = "renku/init-scripts"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
@@ -232,14 +232,14 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/coding-agent"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
 [[order]]
 
   [[order.group]]
     id = "renku/conda-nodefaults"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
@@ -248,15 +248,15 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/python-dependency-manager"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "renku/renku-variables"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "renku/vscodium"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "heroku/deb-packages"
@@ -265,12 +265,12 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/homebrew"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
     id = "renku/init-scripts"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
@@ -280,14 +280,14 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/coding-agent"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
 [[order]]
 
   [[order.group]]
     id = "renku/renku-variables"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "paketo-buildpacks/miniconda"
@@ -295,19 +295,19 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/r-conda"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "renku/renv"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "renku/r-dependency-manager"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "renku/rstudio"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "heroku/deb-packages"
@@ -316,12 +316,12 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/homebrew"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
     id = "renku/init-scripts"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
@@ -331,19 +331,19 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/coding-agent"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
 [[order]]
 
   [[order.group]]
     id = "renku/conda-nodefaults"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
     id = "renku/renku-variables"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "paketo-buildpacks/miniconda"
@@ -351,11 +351,11 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/r-dependency-manager-conda"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "renku/rstudio"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "heroku/deb-packages"
@@ -364,12 +364,12 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/homebrew"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
     id = "renku/init-scripts"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
@@ -379,14 +379,14 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/coding-agent"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
 [[order]]
 
   [[order.group]]
     id = "renku/renku-variables"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "paketo-buildpacks/miniconda"
@@ -394,19 +394,19 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/r-conda"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "renku/renv"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "renku/r-dependency-manager"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "renku/custom-frontend"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "heroku/deb-packages"
@@ -415,12 +415,12 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/homebrew"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
     id = "renku/init-scripts"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
@@ -430,19 +430,19 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/coding-agent"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
 [[order]]
 
   [[order.group]]
     id = "renku/conda-nodefaults"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
     id = "renku/renku-variables"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "paketo-buildpacks/miniconda"
@@ -450,11 +450,11 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/r-dependency-manager-conda"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "renku/custom-frontend"
-    version = "0.9.0"
+    version = "0.9.1"
 
   [[order.group]]
     id = "heroku/deb-packages"
@@ -463,12 +463,12 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/homebrew"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
     id = "renku/init-scripts"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
   [[order.group]]
@@ -478,7 +478,7 @@ description = "Builder for Renku frontends and environments."
 
   [[order.group]]
     id = "renku/coding-agent"
-    version = "0.9.0"
+    version = "0.9.1"
     optional = true
 
 [build]
@@ -491,7 +491,7 @@ description = "Builder for Renku frontends and environments."
 [run]
 
   [[run.images]]
-    image = "ghcr.io/swissdatasciencecenter/renku-frontend-buildpacks/run-image:0.9.0"
+    image = "ghcr.io/swissdatasciencecenter/renku-frontend-buildpacks/run-image:0.9.1"
     mirrors = []
 
 [lifecycle]
