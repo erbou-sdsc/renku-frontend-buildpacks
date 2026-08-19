@@ -1,5 +1,61 @@
 #!/usr/bin/env bash
 
+create_tmux_config() {
+    local -r tmux_config="${1:-${HOME}/work/.tmux.conf}"
+    [[ -e "${tmux_config}" ]] || cat <<-EOF > "${tmux_config}"
+		# ── Fix extended-keys warning ─────────────────────────────────────────
+		set -g extended-keys on
+		
+		# ── General Settings ──────────────────────────────────────────────────
+		set -g default-terminal "screen-256color"
+		set -g base-index 1
+		set -g pane-base-index 1
+		set -g renumber-windows on
+		set -g status-position bottom
+		
+		# ── Disable vi mode for copy/paste (use emacs-style) ─────────────────
+		set -g mode-keys emacs
+		
+		# ── Key Bindings ──────────────────────────────────────────────────────
+		
+		# Use Ctrl+a as prefix (avoids conflict with pi's Ctrl+b)
+		set -g prefix C-a
+		bind C-a send-prefix
+		
+		# Better pane splitting (splits in current directory)
+		bind | split-window -h -c "#{pane_current_path}"
+		bind - split-window -v -c "#{pane_current_path}"
+		bind c new-window -c "#{pane_current_path}"
+		
+		# Vim-style pane navigation (Ctrl+a h/j/k/l)
+		bind h select-pane -L
+		bind j select-pane -D
+		bind k select-pane -U
+		bind l select-pane -R
+		
+		# Resize panes with Alt+arrows (easier than Shift+arrows)
+		bind -n M-Left resize-pane -L 5
+		bind -n M-Right resize-pane -R 5
+		bind -n M-Up resize-pane -U 5
+		bind -n M-Down resize-pane -D 5
+		
+		# Swap panes
+		bind -r H swap-pane -U
+		bind -r J swap-pane -D
+		bind -r K swap-pane -U
+		bind -r L swap-pane -D
+		
+		# ── Mouse Support ─────────────────────────────────────────────────────
+		set -g mouse on
+		
+		# ── Scrollback / Copy Mode ────────────────────────────────────────────
+		# Use Ctrl+b [ to enter copy mode, then use vim keys or mouse to select
+		# Press y to yank (copy) selection
+		bind -T copy-mode-vi v send-keys -X begin-selection
+		bind -T copy-mode-vi y send-keys -X copy-selection-and-cancel
+	EOF
+}
+
 main() {
         local -a args=("$@")
         local -i use_last_session=1
@@ -36,51 +92,17 @@ main() {
 
         local -r socket_name="${HOME}/work/.${harness}/tmux/mux.socket"
         local -r tmux_lock="${HOME}/work/.${harness}/tmux/mux.lock"
-		local -r tmux_config="${HOME}/work/.tmux.conf"
+        local -r tmux_config="${HOME}/work/.tmux.conf"
 
         if (( attach == 0 )); then
-				cd -- "${HOME}/work"
+                cd -- "${HOME}/work"
                 mkdir -p -- $(dirname "${tmux_lock}")
                 exec 4<>"${tmux_lock}"
                 flock -x -w 5 4
                 trap 'tmux -S "'${socket_name}'" kill-server; exit 0' TERM INT
 
-                [[ -e "${tmux_config}" ]] || cat <<-EOF > "${tmux_config}"
-					# ── Scrollback / Copy Mode ────────────────────────────────────────────
-					# Use Ctrl+b [ to enter copy mode, then use vim keys or mouse to select
-					# Press y to yank (copy) selection
-					bind -T copy-mode-vi v send-keys -X begin-selection
-					bind -T copy-mode-vi y send-keys -X copy-selection-and-cancel
-					bind -T copy-mode-vi Enter send-keys -X copy-selection-and-cancel
-
-					# Big scrollback buffer (50k lines)
-					set -g history-limit 50000
-
-					# ── Visual Improvements ───────────────────────────────────────────────
-					set -g status-style "bg=colour235,fg=colour136"
-					set -g status-left-length 30
-					set -g status-right-length 50
-					set -g status-left "#[fg=colour46,bold] #S #[fg=colour136]▸ "
-					set -g status-right "#[fg=colour244] %Y-%m-%d  %H:%M  #[fg=colour46]#h"
-
-					# Active pane highlight
-					set -g pane-border-style "fg=colour235"
-					set -g pane-active-border-style "fg=colour46"
-
-					# Window list
-					set -g window-status-format " #[fg=colour244]#I:#W#F"
-					set -g window-status-current-format " #[fg=colour46,bold]#I:#W#F"
-
-					# ── Quick Commands ────────────────────────────────────────────────────
-					# Reload config: Ctrl+b :source-file ~/.tmux.conf
-					bind : source-file /home/renku/work/.tmux.conf \; display "Config reloaded!"
-
-					# Kill window
-					bind x kill-pane \; display "Pane killed"
-				EOF
-
                 while true; do
-                        # Reuse the most recent session if any.
+                        # Find the most recent harness session if any.
                         if (( use_last_session == 1 )) && [[ "${harness}" == "pi" && -d "${PI_CODING_AGENT_DIR:-.}/sessions" ]] ; then
                                 while read -r s; do
                                         if [[ "${s}" =~ ^.*_([0-9a-z-]+).jsonl$ ]]; then
@@ -90,8 +112,9 @@ main() {
                                 done < <(find "${PI_CODING_AGENT_DIR:-.}/sessions" -name '*.jsonl' -type f -printf '%f\n'|sort -r|head -1)
                         fi
 
-                        # Reuse the most recent session if any.
+                        # Create a new tmux session if one doesn't exist yet.
                         if ! tmux -S "${socket_name}" has-session -t ${harness}-shell >& /dev/null; then
+                                create_tmux_config "${tmux_config}"
                                 tmux -f "${tmux_config}" -S "${socket_name}" new-session -d -s ${harness}-shell ${harness} "${args[@]}"
                         fi
 
