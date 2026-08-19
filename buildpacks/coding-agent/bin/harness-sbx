@@ -57,6 +57,7 @@ create_tmux_config() {
 }
 
 main() {
+        set -eu
         local -a args=("$@")
         local -i use_last_session=1
         local -i attach=1
@@ -96,10 +97,10 @@ main() {
 
         if (( attach == 0 )); then
                 cd -- "${HOME}/work"
-                mkdir -p -- $(dirname "${tmux_lock}")
+                mkdir -p -- "$(dirname "${tmux_lock}")"
                 exec 4<>"${tmux_lock}"
                 flock -x -w 5 4
-                trap 'tmux -S "'${socket_name}'" kill-server; exit 0' TERM INT
+                trap 'tmux -S "'"${socket_name}"'" kill-server; exit 0' TERM INT
 
                 while true; do
                         # Find the most recent harness session if any.
