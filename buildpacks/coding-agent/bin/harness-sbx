@@ -36,6 +36,7 @@ main() {
 
         local -r socket_name="${HOME}/work/.${harness}/tmux/mux.socket"
         local -r tmux_lock="${HOME}/work/.${harness}/tmux/mux.lock"
+		local -r tmux_config="${HOME}/work/.tmux.conf"
 
         if (( attach == 0 )); then
 				cd -- "${HOME}/work"
@@ -44,9 +45,43 @@ main() {
                 flock -x -w 5 4
                 trap 'tmux -S "'${socket_name}'" kill-server; exit 0' TERM INT
 
+                [[ -e "${tmux_config}" ]] || cat <<-EOF > "${tmux_config}"
+					# ── Scrollback / Copy Mode ────────────────────────────────────────────
+					# Use Ctrl+b [ to enter copy mode, then use vim keys or mouse to select
+					# Press y to yank (copy) selection
+					bind -T copy-mode-vi v send-keys -X begin-selection
+					bind -T copy-mode-vi y send-keys -X copy-selection-and-cancel
+					bind -T copy-mode-vi Enter send-keys -X copy-selection-and-cancel
+
+					# Big scrollback buffer (50k lines)
+					set -g history-limit 50000
+
+					# ── Visual Improvements ───────────────────────────────────────────────
+					set -g status-style "bg=colour235,fg=colour136"
+					set -g status-left-length 30
+					set -g status-right-length 50
+					set -g status-left "#[fg=colour46,bold] #S #[fg=colour136]▸ "
+					set -g status-right "#[fg=colour244] %Y-%m-%d  %H:%M  #[fg=colour46]#h"
+
+					# Active pane highlight
+					set -g pane-border-style "fg=colour235"
+					set -g pane-active-border-style "fg=colour46"
+
+					# Window list
+					set -g window-status-format " #[fg=colour244]#I:#W#F"
+					set -g window-status-current-format " #[fg=colour46,bold]#I:#W#F"
+
+					# ── Quick Commands ────────────────────────────────────────────────────
+					# Reload config: Ctrl+b :source-file ~/.tmux.conf
+					bind : source-file /home/renku/work/.tmux.conf \; display "Config reloaded!"
+
+					# Kill window
+					bind x kill-pane \; display "Pane killed"
+				EOF
+
                 while true; do
                         # Reuse the most recent session if any.
-                        if (( use_last_session == 1 )) && [[ -d "${PI_CODING_AGENT_DIR:-.}/sessions" ]] ; then
+                        if (( use_last_session == 1 )) && [[ "${harness}" == "pi" && -d "${PI_CODING_AGENT_DIR:-.}/sessions" ]] ; then
                                 while read -r s; do
                                         if [[ "${s}" =~ ^.*_([0-9a-z-]+).jsonl$ ]]; then
                                                 args+=("--session" "${BASH_REMATCH[1]}")
@@ -57,7 +92,7 @@ main() {
 
                         # Reuse the most recent session if any.
                         if ! tmux -S "${socket_name}" has-session -t ${harness}-shell >& /dev/null; then
-                                tmux -S "${socket_name}" new-session -d -s ${harness}-shell ${harness} "${args[@]}"
+                                tmux -f "${tmux_config}" -S "${socket_name}" new-session -d -s ${harness}-shell ${harness} "${args[@]}"
                         fi
 
                         # Pool until tmux session exits.
