@@ -7,14 +7,14 @@ create_tmux_config() {
 		set -g extended-keys on
 		
 		# ── General Settings ──────────────────────────────────────────────────
-		set -g default-terminal "screen-256color"
+		set -g default-terminal "tmux-256color"
 		set -g base-index 1
 		set -g pane-base-index 1
 		set -g renumber-windows on
 		set -g status-position bottom
 		
 		# ── Disable vi mode for copy/paste (use emacs-style) ─────────────────
-		set -g mode-keys emacs
+		set -g mode-keys vi
 		
 		# ── Key Bindings ──────────────────────────────────────────────────────
 		
@@ -34,23 +34,24 @@ create_tmux_config() {
 		bind l select-pane -R
 		
 		# Resize panes with Alt+arrows (easier than Shift+arrows)
-		bind -n M-Left resize-pane -L 5
-		bind -n M-Right resize-pane -R 5
-		bind -n M-Up resize-pane -U 5
-		bind -n M-Down resize-pane -D 5
+		bind -n C-S-Left resize-pane -L 5
+		bind -n C-S-Right resize-pane -R 5
+		bind -n C-S-Up resize-pane -U 5
+		bind -n C-S-Down resize-pane -D 5
 		
 		# Swap panes
 		bind -r H swap-pane -U
 		bind -r J swap-pane -D
-		bind -r K swap-pane -U
-		bind -r L swap-pane -D
 		
 		# ── Mouse Support ─────────────────────────────────────────────────────
-		set -g mouse on
+		set -g mouse off
 		
 		# ── Scrollback / Copy Mode ────────────────────────────────────────────
 		# Use Ctrl+b [ to enter copy mode, then use vim keys or mouse to select
 		# Press y to yank (copy) selection
+		bind [ copy-mode \; send-keys -X end
+		bind -T copy-mode-vi PageUp send-keys -X page-up
+		bind -T copy-mode-vi PageDown send-keys -X page-down
 		bind -T copy-mode-vi v send-keys -X begin-selection
 		bind -T copy-mode-vi y send-keys -X copy-selection-and-cancel
 	EOF
